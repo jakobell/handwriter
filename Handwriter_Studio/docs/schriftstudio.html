@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'">
+  <meta name="theme-color" content="#f3f4f7">
+  <meta name="description" content="Erstelle ein Handschriftprofil mit dem Finger auf dem Touchscreen, lokal und ohne Anmeldung.">
+  <title>Schriftstudio V3 · SVG-Handschriftprofil</title>
+  
+  <link rel="stylesheet" href="css/capture.css">
+  
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="branding">
+        <div class="brand-mark" aria-hidden="true">✎</div>
+        <div><div class="brand-title">Schriftstudio</div><div class="brand-sub">Deine Handschrift · SVG-Vektorprofil V3</div></div>
+      </div>
+      <div class="header-actions"><a class="btn btn-light" href="index.html">Handwriter</a>
+        <span class="save-status" id="saveStatus" role="status" aria-live="polite"><span class="save-dot"></span>Wird geladen …</span>
+        <button class="btn btn-primary btn-export" id="exportProfile" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 17v3h14v-3"/></svg> JSON exportieren</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="progress-panel" aria-label="Fortschritt">
+        <div class="progress-heading"><div><p class="eyebrow">DEIN HANDSCHRIFTPROFIL</p><h1>Zeichen erfassen <span id="characterPosition">1 / 1</span></h1></div><div class="progress-info"><strong id="completedCount">0</strong> <span id="totalCount">/ 0 Zeichen</span><small>alle 5 Varianten</small></div></div>
+        <div class="progress-track" role="progressbar" aria-label="Erfasste Varianten" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+        <div id="saveInline" role="status" class="progress-save">Wird geladen …</div><div class="progress-sub"><span id="progressPercent">0 % erledigt</span><span id="variantCountTop">0 / 5 Varianten für dieses Zeichen</span></div>
+      </section>
+
+      <section class="editor-layout" aria-label="Schreiboberfläche">
+        <div class="character-sidebar">
+          <div class="sidebar-top"><p class="eyebrow">AKTUELLES ZEICHEN</p><div class="character-card"><div class="character-category" id="charCategory">Kleinbuchstabe</div><div class="character-symbol" id="characterSymbol" aria-live="polite">a</div><div class="character-name" id="characterName">Kleines a</div></div>
+          <p class="character-instruction">Zeichne das Zeichen mit dem <b>Finger</b> fünfmal. Setze es möglichst auf die gestrichelte Linie.</p>
+          </div>
+          <div class="nav-block"><div class="nav-ends"><button class="nav-btn" id="prevChar" type="button" aria-label="Vorheriges Zeichen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Zurück</span></button><button class="nav-btn nav-btn-next" id="nextChar" type="button" aria-label="Nächstes Zeichen"><span>Weiter</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><button class="text-btn" id="nextOpen" type="button">Nächstes unvollständiges Zeichen <span aria-hidden="true">↗</span></button></div>
+        </div>
+
+        <div class="writing-section">
+          <div class="writing-head"><div><h2>Deine fünf Varianten <span class="completion-pill" id="completionPill">0 / 5</span></h2><p>Schreibe natürlich. Größe, Grundlinie und X-Position werden beim Export automatisch normalisiert.</p></div><div class="pen-controls"><label for="strokeWidth">Strichstärke</label><input type="range" min="5" max="15" step="1" value="9" id="strokeWidth" aria-label="Strichstärke einstellen"><span id="strokeValue">Normal</span></div></div>
+          <div class="pad-grid" id="padGrid">
+            <article class="pad-card" data-slot="0"><div class="pad-head"><div class="pad-title"><span class="pad-num">01</span> Variante 1 <span class="pad-check" aria-label="Ausgefüllt">✓</span></div><button class="trash-btn" type="button" aria-label="Variante 1 löschen" title="Dieses Feld löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16m-10 0V4h4v3m-8 0 1 13h10l1-13M10 11v6m4-6v6"/></svg></button></div><div class="canvas-frame"><canvas class="writing-pad" aria-label="Schreibfeld für Variante 1" data-slot="0"></canvas><span class="canvas-hint">Mit dem Finger schreiben</span></div></article>
+            <article class="pad-card" data-slot="1"><div class="pad-head"><div class="pad-title"><span class="pad-num">02</span> Variante 2 <span class="pad-check" aria-label="Ausgefüllt">✓</span></div><button class="trash-btn" type="button" aria-label="Variante 2 löschen" title="Dieses Feld löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16m-10 0V4h4v3m-8 0 1 13h10l1-13M10 11v6m4-6v6"/></svg></button></div><div class="canvas-frame"><canvas class="writing-pad" aria-label="Schreibfeld für Variante 2" data-slot="1"></canvas><span class="canvas-hint">Mit dem Finger schreiben</span></div></article>
+            <article class="pad-card" data-slot="2"><div class="pad-head"><div class="pad-title"><span class="pad-num">03</span> Variante 3 <span class="pad-check" aria-label="Ausgefüllt">✓</span></div><button class="trash-btn" type="button" aria-label="Variante 3 löschen" title="Dieses Feld löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16m-10 0V4h3v3m-8 0 1 13h10l1-13M10 11v6m4-6v6"/></svg></button></div><div class="canvas-frame"><canvas class="writing-pad" aria-label="Schreibfeld für Variante 3" data-slot="2"></canvas><span class="canvas-hint">Mit dem Finger schreiben</span></div></article>
+            <article class="pad-card" data-slot="3"><div class="pad-head"><div class="pad-title"><span class="pad-num">04</span> Variante 4 <span class="pad-check" aria-label="Ausgefüllt">✓</span></div><button class="trash-btn" type="button" aria-label="Variante 4 löschen" title="Dieses Feld löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16m-10 0V4h4v3m-8 0 1 13h10l1-13M10 11v6m4-6v6"/></svg></button></div><div class="canvas-frame"><canvas class="writing-pad" aria-label="Schreibfeld für Variante 4" data-slot="3"></canvas><span class="canvas-hint">Mit dem Finger schreiben</span></div></article>
+            <article class="pad-card" data-slot="4"><div class="pad-head"><div class="pad-title"><span class="pad-num">05</span> Variante 5 <span class="pad-check" aria-label="Ausgefüllt">✓</span></div><button class="trash-btn" type="button" aria-label="Variante 5 löschen" title="Dieses Feld löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16m-10 0V4h4v3m-8 0 1 13h10l1-13M10 11v6m4-6v6"/></svg></button></div><div class="canvas-frame"><canvas class="writing-pad" aria-label="Schreibfeld für Variante 5" data-slot="4"></canvas><span class="canvas-hint">Mit dem Finger schreiben</span></div></article>
+          </div>
+          <div class="pad-bottom"><span><span class="purple-dot"></span> Automatisch gespeichert nach jedem Strich. JSON-Sicherung für Gerätewechsel.</span><button class="text-btn" id="undoStroke" type="button">↶ Letzten Strich zurücknehmen</button></div>
+        </div>
+      </section>
+
+      <section class="lower-toolbar" aria-label="Zeichennavigation und Dateiexport">
+        <div class="category-nav"><label for="categorySelect">Zeichengruppe</label><select id="categorySelect" aria-label="Zur Zeichengruppe springen"></select><label for="characterSelect">Zeichen</label><select id="characterSelect" aria-label="Direkt zu einem Zeichen springen"></select></div>
+        <div class="secondary-actions"><button class="btn btn-primary" id="useInWriter" type="button">Im Handwriter verwenden →</button><button class="btn btn-light" id="backupProject" type="button">JSON-Sicherung</button><button class="btn btn-light" id="restoreProject" type="button">JSON laden</button><input id="projectFile" type="file" accept=".json,application/json" hidden></div>
+      </section>
+      <footer class="footnote"><span>Privat · Fortschritt nur in diesem Browser · JSON-Sicherung für Gerätewechsel</span><button type="button" id="resetAll" class="danger-link">Alle Zeichnungen löschen</button></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="confirmDialog"><form method="dialog"><h2>Alle Zeichnungen löschen?</h2><p>Das entfernt alle gespeicherten Schriftproben auf diesem Gerät. Eine zuvor exportierte Datei bleibt erhalten.</p><div class="dialog-actions"><button value="cancel" class="btn btn-light">Abbrechen</button><button value="confirm" class="btn btn-danger">Ja, alles löschen</button></div></form></dialog>
+<script src="js/capture.js?v=7.0" defer></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Personal handwriting data and outputs never belong in the repo
+python/glyphs/
+glyphs/
+glyphs_preview.png
+scans*.pdf
+*_handwritten*.pdf
+handwriting_template.pdf
+handwriting-profile*.json
+_flat*.png
+*.jpg
+*.jpeg
+*.heic
+
+__pycache__/
+*.pyc
+.venv/
+.claude/
+.DS_Store
+Thumbs.db

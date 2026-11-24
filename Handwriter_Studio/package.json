@@ -1,0 +1,1 @@
+{"name":"handwriter-studio","version":"7.0.0","private":true,"type":"module","scripts":{"test":"node tests/capture-ui.mjs && node tests/normalization.mjs && node tests/vector.mjs && node tests/smoke.mjs && node tests/v6.mjs && node tests/pdf-clip.mjs"}}
